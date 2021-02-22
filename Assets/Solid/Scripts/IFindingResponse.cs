@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IFindingResponse
+interface IFindingResponse
 {
     void OnFind(Transform finding);
     void OnLose(Transform finding);
