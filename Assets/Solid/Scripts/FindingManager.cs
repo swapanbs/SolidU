@@ -4,40 +4,31 @@ using UnityEngine;
 
 public class FindingManager : MonoBehaviour
 {
-    [SerializeField] private string findingTag = "FindingObj";
-
+    private IRayProvider _rayProvider;
     private IFindingResponse _findingResponse;
-    private Transform _transform;
-
+    private IFinder _finder;
+    private Transform _CurrentTransform;
 
     private void Awake()
     {
         _findingResponse = GetComponent<IFindingResponse>();
+        _rayProvider = GetComponent<IRayProvider>();
+        _finder = GetComponent<IFinder>();
     }
     // Update is called once per frame
     void Update()
     {
-        if(_transform!=null)
+        if (_CurrentTransform != null)
         {
-            _findingResponse.OnLose(_transform);
+            _findingResponse.OnLose(_CurrentTransform);
         }
 
-        var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        _transform = null;
-        RaycastHit hit;
-        if(Physics.Raycast(ray, out hit ))
+        var ray = _rayProvider.RayCreate();
+        _finder.Check(ray);
+        _CurrentTransform =_finder.GetFinding();
+        if (_CurrentTransform != null)
         {
-            var transform = hit.transform;
-            if(transform.CompareTag(findingTag))
-            {
-                _transform = transform;
-            }
-        }
-
-        if(_transform!=null)
-        {
-            _findingResponse.OnFind(_transform);
+            _findingResponse.OnFind(_CurrentTransform);
         }
     }
 }
