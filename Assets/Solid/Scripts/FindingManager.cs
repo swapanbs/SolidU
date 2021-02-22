@@ -11,9 +11,9 @@ public class FindingManager : MonoBehaviour
 
     private void Awake()
     {
-        _findingResponse = GetComponent<IFindingResponse>();
         _rayProvider = GetComponent<IRayProvider>();
         _finder = GetComponent<IFinder>();
+        _findingResponse = GetComponent<IFindingResponse>();
     }
     // Update is called once per frame
     void Update()
